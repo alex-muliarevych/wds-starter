@@ -12,14 +12,6 @@ services:
       - wds-mysql.env
     networks:
       - wds_internal_net
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 50M
-        reservations:
-          cpus: '0.25'
-          memory: 20M
   wds-app:
     container_name: wds-app
     environment:
