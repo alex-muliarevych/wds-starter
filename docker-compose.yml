@@ -1,0 +1,40 @@
+version: "3.3"
+
+services:
+  wds-mysql:
+    container_name: wds-mysql
+    image: mysql:5.7.22
+    volumes:
+      - wds_mysql_db:/var/lib/mysql
+    ports:
+      - "14000:3306"
+    env_file:
+      - wds-mysql.env
+    networks:
+      - wds_internal_net
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
+  wds-app:
+    container_name: wds-app
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+    image: lvovlink/wds-docker:0.0.3
+    depends_on:
+      - "wds-mysql"
+    ports:
+      - "8080:8080"
+    networks:
+      - wds_internal_net
+
+
+volumes:
+  wds_mysql_db:
+
+networks:
+  wds_internal_net:
